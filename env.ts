@@ -4,7 +4,7 @@ import { z } from 'zod'
 process.env.APP_STAGE = process.env.APP_STAGE || 'dev'
 
 const isProduction = process.env.APP_STAGE === 'production'
-const isDevelopment = process.env.APP_STAGE === 'dev'
+const isDevelopment =  process.env.APP_STAGE === 'dev'
 const isTesting = process.env.APP_STAGE === 'test'
 
 if (isDevelopment) {
@@ -17,7 +17,6 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),
-
   APP_STAGE: z.enum(['dev', 'test', 'production']).default('dev'),
 
   PORT: z.coerce.number().positive().default(3000),
@@ -28,6 +27,7 @@ const envSchema = z.object({
 })
 
 export type Env = z.infer<typeof envSchema>
+
 let env: Env
 
 try {
@@ -37,7 +37,7 @@ try {
     console.log('Invalid env var')
     console.error(JSON.stringify(e.flatten().fieldErrors, null, 2))
 
-    e.issues.forEach((err) => {
+    e.issues.forEach(err => {
       const path = err.path.join('.')
       console.log(`${path}: ${err.message}`)
     })
@@ -49,8 +49,9 @@ try {
 }
 
 export const isProd = () => env.APP_STAGE === 'production'
-export const isDev = () => env.APP_STAGE === 'dev'
+export const isDev = () => env.APP_STAGE ==='dev'
 export const isTest = () => env.APP_STAGE === 'test'
 
 export { env }
+
 export default env
